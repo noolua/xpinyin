@@ -20,6 +20,9 @@ class PinyinTests(unittest.TestCase):
     def test_get_pinyin_mixed_words(self):
         self.assertEqual(self.p.get_pinyin(u'Apple发布iOS7', splitter=u'-'),
                          u'Apple-fa-bu-iOS7')
+    def test_get_pinyin_mixed_words_v2(self):
+        res = self.p.get_pinyin_v2(u'我的世界，“真行！！很火！！！”', show_tone_marks=True, multitones=True)
+        print(res)
 
     def test_get_pinyin_with_tone_marks(self):
         self.assertEqual(self.p.get_pinyin(u'上海', show_tone_marks=True), u'sh\xe0ng-h\u01cei')

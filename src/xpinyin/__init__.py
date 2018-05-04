@@ -50,15 +50,15 @@ class Pinyin(object):
     .. _chinese\_pinyin: https://github.com/flyerhzm/chinese_pinyin
     """
 
-    data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                             'Mandarin.dat')
+    data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Mandarin.dat')
 
     def __init__(self, data_path=data_path):
         self.dict = {}
         with open(data_path) as f:
             for line in f:
                 k, v = line.split('\t')
-                self.dict[k] = v
+                res = [r.strip() for r in v.split()]
+                self.dict[k] = res
 
     @staticmethod
     def decode_pinyin(s):
@@ -105,6 +105,21 @@ class Pinyin(object):
         if convert == 'upper':
             return word.upper()
 
+    def get_pinyin_v2(self, chars=u'我的世界，真行！', show_tone_marks=False, convert='lower', multitones=False):
+        result = []
+        for ch in chars:
+            key = "%X" % ord(ch)
+            values = self.dict.get(key, None)
+            if values:
+                if show_tone_marks:
+                    result.append([self.convert_pinyin(self.decode_pinyin(v), convert) for v in values])
+                else:
+                    result.append([self.convert_pinyin(v[:-1], convert) for v in values])
+            else:
+                result.append([ch])
+        if multitones == False:
+            result = [r[0] for r in result]
+        return result
     def get_pinyin(self, chars=u'你好', splitter=u'-',
                    show_tone_marks=False, convert='lower'):
         result = []
@@ -113,9 +128,9 @@ class Pinyin(object):
             key = "%X" % ord(char)
             try:
                 if show_tone_marks:
-                    word = self.decode_pinyin(self.dict[key].split()[0].strip())
+                    word = self.decode_pinyin(self.dict[key][0])
                 else:
-                    word = self.dict[key].split()[0].strip()[:-1]
+                    word = self.dict[key][0][:-1]
                 word = self.convert_pinyin(word, convert)
                 result.append(word)
                 flag = 1
@@ -129,7 +144,7 @@ class Pinyin(object):
 
     def get_initial(self, char=u'你'):
         try:
-            return self.dict["%X" % ord(char)].split(" ")[0][0]
+            return self.dict["%X" % ord(char)][0][0]
         except KeyError:
             return char
 
@@ -138,7 +153,7 @@ class Pinyin(object):
         flag = 1
         for char in chars:
             try:
-                result.append(self.dict["%X" % ord(char)].split(" ")[0][0])
+                result.append(self.dict["%X" % ord(char)][0][0])
                 flag = 1
             except KeyError:
                 if flag:

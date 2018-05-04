@@ -9,7 +9,7 @@ README = io.open(os.path.join(here, 'README.rst'), encoding='UTF-8').read()
 CHANGES = io.open(os.path.join(here, 'CHANGES.rst'), encoding='UTF-8').read()
 
 setup(name="xpinyin",
-      version='0.5.5',
+      version='0.5.5-sp',
       description="translate chinese hanzi to pinyin by python",
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
@@ -26,9 +26,9 @@ setup(name="xpinyin",
           'Topic :: Software Development :: Libraries :: Python Modules',
       ],
       keywords='pinyin',
-      author="Eric Lo",
-      author_email="lxneng@gmail.com",
-      url="https://github.com/lxneng/xpinyin",
+      author="Eric Lo, Noolua",
+      author_email="lxneng@gmail.com, noolua@gmail.com",
+      url="https://github.com/noolua/xpinyin",
       packages=find_packages('src'),
       test_suite='xpinyin.tests',
       package_dir={'': 'src'},
